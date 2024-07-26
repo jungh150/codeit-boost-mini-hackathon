@@ -1,2 +1,2 @@
-# codeit-boost-minihackathon
-Codeit Boost Mini Hackathon 2024.07.26.-2024.07.30
+# ewha-codeit-boost-runnerton
+Ewha Codeit Boost Runner-ton 2024.07.26.-2024.07.30
