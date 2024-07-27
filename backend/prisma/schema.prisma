@@ -23,6 +23,7 @@ model User {
 
   reviews        Review[]
   wishes         Wish[]
+
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
 
@@ -39,6 +40,7 @@ model Place {
 
   reviews        Review[]
   wishes         Wish[]
+  events    Event[]
 
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
@@ -75,11 +77,45 @@ model Wish {
   @@index([placeId])
 }
 
+model Travel {
+  id          String   @id @default(uuid())
+  userId      String
+  description String
+  startDate   DateTime
+  endDate     DateTime
+
+  days        Day[]
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Day {
+  id        String   @id @default(uuid())
+  travelId  String
+  day       Int
+
+  travel    Travel   @relation(fields: [travelId], references: [id])
+  events    Event[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([travelId])
+}
+
 model Event {
   id        String   @id @default(uuid())
+  dayId     String
   placeId   String
-  date      DateTime
-  note      String?
+  order     Int
 
+  day       Day      @relation(fields: [dayId], references: [id])
+  place     Place    @relation(fields: [placeId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([dayId])
   @@index([placeId])
 }
