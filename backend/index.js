@@ -26,7 +26,7 @@ const users = [{
   providerId: ''
 }];
 
-//구글 API ID, Secret 정보 저장 (구글 개발자 웹사이트에서 발급받은 클라이언트 ID와 시크릿 입력)
+// 구글 API ID, Secret 정보 저장 (구글 개발자 웹사이트에서 발급받은 클라이언트 ID와 시크릿 입력)
 const googleCredentials = {
   "web": {
     "client_id": googleClientId,
@@ -108,11 +108,11 @@ app.get('/', (req, res) => {
 app.get('/auth/logout', (req, res, next) => {
   req.logout((err) => {
     if (err) {
-      return next(err); // 에러가 발생하면 next(err)로 에러 핸들러로 보냅니다.
+      return next(err); // 에러가 발생하면 next(err)로 에러 핸들러로 전달
     }
     req.session.destroy((err) => {
       if (err) {
-        return next(err); // 에러가 발생하면 next(err)로 에러 핸들러로 보냅니다.
+        return next(err); // 에러가 발생하면 next(err)로 에러 핸들러로 전달
       }
       res.clearCookie('connect.sid');
       res.redirect('/');
@@ -123,7 +123,7 @@ app.get('/auth/logout', (req, res, next) => {
 // 에러 핸들러
 app.use((err, req, res, next) => {
   if (res.headersSent) {
-    return next(err); // 이미 헤더가 전송된 경우, 다음 에러 핸들러로 전달합니다.
+    return next(err); // 이미 헤더가 전송된 경우, 다음 에러 핸들러로 전달
   }
   res.status(500).send(err.message || 'Internal Server Error');
 });
