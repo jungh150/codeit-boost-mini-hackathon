@@ -60,4 +60,24 @@ router.delete('/:placeId', async (req, res) => {
     }
 }); // 세미콜론 잊지말기
 
+// 여행지 검색
+router.get('/', async (req, res) => {
+    try {
+        const { name, description, rating } = req.query;
+
+        const where = {};
+        if ( name ) where.name = { contains: name }; // insensitive mode(대소문자 구분 없이 검색) 오류나서 못 씀
+        if ( description ) where.description = { contains: description };
+        if ( rating ) where.rating = { gte: parseFloat(rating) };
+
+        const places = await prisma.place.findMany({
+            where
+        });
+
+        res.status(200).json(places);
+    } catch ( error ){
+        res.status(500).json({ message: error.message });
+    }
+});
+
 export default router;
