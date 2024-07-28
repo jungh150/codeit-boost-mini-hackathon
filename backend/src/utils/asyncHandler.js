@@ -1,23 +1,24 @@
 import { Prisma } from '@prisma/client';
 
-function asyncHandler(handler) {
-  return async function (req, res) {
+const asyncHandler = (handler) => {
+  return async (req, res, next) => {
     try {
-      await handler(req, res);
+      await handler(req, res, next);
     } catch (e) {
       if (
         e.name === 'StructError' ||
         e instanceof Prisma.PrismaClientValidationError
       ) {
-        res.status(400).send({ message: e.message });
+        res.status(400).json({ message: e.message });
       } else if (
         e instanceof Prisma.PrismaClientKnownRequestError &&
         e.code === 'P2025'
       ) {
-        res.sendStatus(404);
+        res.status(404).json({ message: 'Resource not found' });
       } else {
-        res.status(500).send({ message: e.message });
+        res.status(500).json({ message: e.message });
       }
+      next(e); // 추가적으로 에러 핸들러로 전달
     }
   };
 }
