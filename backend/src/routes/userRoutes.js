@@ -79,7 +79,7 @@ userRouter.get('/my', asyncHandler(async (req, res) => {
 //   }
 // }));
 
-// 내 찜 전체 조회
+// 내 찜 목록 조회
 userRouter.get('/my/wishes', asyncHandler(async (req, res) => {
   const myEmail = req.user.email;
   console.log(myEmail);
@@ -96,26 +96,7 @@ userRouter.get('/my/wishes', asyncHandler(async (req, res) => {
   }
 }));
 
-// 사용자의 찜 상세 조회
-// userRouter.get('/:email/wishes/:wishId', asyncHandler(async (req, res) => {
-//   const { email, wishId } = req.params;
-//   const user = await prisma.user.findUnique({
-//     where: { email },
-//     include: {
-//       wishes: true,
-//     },
-//   });
-//   const wish = user.wishes.findUnique({
-//     where: { id: wishId },
-//   });
-//   if (wish) {
-//     res.send(wish);
-//   } else {
-//     res.status(404).send({ message: 'Cannot find wish.' });
-//   }
-// }));
-
-// 내 리뷰 전체 조회
+// 내 리뷰 목록 조회
 userRouter.get('/my/reviews', asyncHandler(async (req, res) => {
   const myEmail = req.user.email;
   console.log(myEmail);
@@ -127,6 +108,23 @@ userRouter.get('/my/reviews', asyncHandler(async (req, res) => {
   });
   if (user) {
     res.send(user.reviews);
+  } else {
+    res.status(404).send({ message: 'Cannot find given email.' });
+  }
+}));
+
+// 내 여행 계획 목록 조회
+userRouter.get('/my/travels', asyncHandler(async (req, res) => {
+  const myEmail = req.user.email;
+  console.log(myEmail);
+  const user = await prisma.user.findUnique({
+    where: { email: myEmail },
+    include: {
+      travels: true,
+    },
+  });
+  if (user) {
+    res.send(user.travels);
   } else {
     res.status(404).send({ message: 'Cannot find given email.' });
   }
