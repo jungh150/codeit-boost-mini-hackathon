@@ -90,5 +90,23 @@ router.get('/', async (req, res) => {
     }
 });
 
+// 여행지 상세 조회
+router.get('/:placeId', async (req, res) => {
+    try{
+        const { placeId } = req.params;
+        const place = await prisma.place.findUnique({
+            where: { id: placeId }
+        });
+        if(!place){
+            return res.status(404).json({ message: 'Place not found'}); // return?
+        } else{
+            res.status(200).json(place);
+        }
+
+    } catch ( error ){
+        res.status(500).json({ message: error.message });
+    }
+});
+
 
 export default router;
