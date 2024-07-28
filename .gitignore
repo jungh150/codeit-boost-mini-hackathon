@@ -1,2 +1,16 @@
-node_modules
-.env
+# Node modules
+/backend/node_modules/
+
+# Environment variables
+/backend/.env
+
+# Prisma migrations
+/backend/prisma/migrations/
+
+# Sessions
+/backend/sessions/
+
+# Logs
+*.log
+
+# 기타 Git에 포함하지 않을 파일들
