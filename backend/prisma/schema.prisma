@@ -29,6 +29,7 @@ model User {
 
   reviews Review[]
   wishes  Wish[]
+  travels Travel[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -59,15 +60,15 @@ model Place {
 
 model Review {
   // 리뷰 아이디 (Primary Key)
-  id        String   @id @default(uuid())
+  id      String @id @default(uuid())
   // 사용자 아이디 (Forien Key)
-  userId    String
+  userId  String
   // 장소 아이디 (Forien Key)
-  placeId   String
+  placeId String
   // 리뷰 평점
-  rating    Int
+  rating  Int
   // 리뷰 평점
-  comment   String
+  comment String
 
   user  User  @relation(fields: [userId], references: [id])
   place Place @relation(fields: [placeId], references: [id])
@@ -81,13 +82,13 @@ model Review {
 
 model Wish {
   // 찜 아이디 (Primary Key)
-  id        String   @id @default(uuid())
+  id      String  @id @default(uuid())
   // 사용자 아이디 (Forien Key)
-  userId    String
+  userId  String
   // 장소 아이디 (Forien Key)
-  placeId   String
+  placeId String
   // 찜 메모
-  comment   String?
+  comment String?
 
   user  User  @relation(fields: [userId], references: [id])
   place Place @relation(fields: [placeId], references: [id])
@@ -111,6 +112,7 @@ model Travel {
   // 여행 종료 날짜
   endDate     DateTime
 
+  user User  @relation(fields: [userId], references: [id])
   days Day[]
 
   createdAt DateTime @default(now())
