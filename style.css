@@ -1,0 +1,26 @@
+.box {
+    height: 100%;
+    width: 100%;
+    margin-left:50px;
+  }
+  /* 여행 일정 짜기(일정 정하기) */
+  
+  .trip{position: absolute;
+  width: 1440px;
+  height: 1024px;
+  left: 0px;
+  top: 0px;
+  
+  background: #FFFFFF;
+       }
+  
+  .r{/* Rectangle 36 */
+  
+    position: absolute;
+    width: 1442px;
+    height: 110px;
+    left: -2px;
+    top: -1px;
+  
+    background: #b8b7b7;
+  }

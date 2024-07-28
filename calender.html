@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="calender.css" />
+    <title>MHDP 전체 캘린더</title>
+  </head>
+  <body>
+    <div class="달력">
+      <div class="헤더">
+        <div class="year-month"></div>
+        <div class="내비게이션">
+          <button class="nav-btn go-prev" onclick="prevMonth()"><</button>
+          <button class="nav-btn go-today" onclick="goToday()">오늘</button>
+          <button class="nav-btn go-next" onclick="nextMonth()">></button>
+        </div>
+      </div>
+      <div class="main">
+        <div class="week">
+          <div class="day">일</div>
+          <div class="day">월</div>
+          <div class="day">화</div>
+          <div class="day">수</div>
+          <div class="day">목</div>
+          <div class="day">금</div>
+          <div class="day">토</div>
+        </div>
+        <div class="dates"></div>
+      </div>
+    </div>
+    <script src="index.js"></script>
+  </body>
+</html>
