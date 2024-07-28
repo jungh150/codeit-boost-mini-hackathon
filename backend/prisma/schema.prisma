@@ -14,72 +14,142 @@ datasource db {
 }
 
 model User {
-  id             String   @id @default(uuid()) // 고유 ID
-  provider       String
-  providerId     String   @unique
-  token          String
-  name           String
-  email          String   @unique
+  // 사용자 아이디 (Primary Key)
+  id         String @id @default(uuid())
+  // 로그인 제공자 (ex. "google")
+  provider   String
+  // 로그인 제공자 아이디 (Google에서 제공하는 아이디)
+  providerId String @unique
+  // OAuth 토큰
+  token      String
+  // 사용자 이름
+  name       String
+  // 사용자의 Google 아이디 
+  email      String @unique
 
-  reviews        Review[]
-  wishes         Wish[]
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
+  reviews Review[]
+  wishes  Wish[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([email])
   @@index([providerId])
 }
 
 model Place {
-  id             String   @id @default(uuid())
-  name           String
-  description    String
-  location       Json     // latitude와 longitude를 포함하는 JSON
-  rating         Float?
+  // 장소 아이디 (Primary Key)
+  id          String @id @default(uuid())
+  // 장소 이름
+  name        String
+  // 장소 설명
+  description String
+  // 장소 위치 (latitude와 longitude를 포함하는 JSON)
+  location    Json
+  // 평균 평점
+  rating      Float?
 
-  reviews        Review[]
-  wishes         Wish[]
+  reviews Review[]
+  wishes  Wish[]
+  events  Event[]
 
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Review {
+  // 리뷰 아이디 (Primary Key)
   id        String   @id @default(uuid())
+  // 사용자 아이디 (Forien Key)
   userId    String
+  // 장소 아이디 (Forien Key)
   placeId   String
+  // 리뷰 평점
   rating    Int
+  // 리뷰 평점
   comment   String
+
+  user  User  @relation(fields: [userId], references: [id])
+  place Place @relation(fields: [placeId], references: [id])
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  user     User   @relation(fields: [userId], references: [id])
-  place    Place  @relation(fields: [placeId], references: [id])
-  
   @@index([userId])
   @@index([placeId])
 }
 
 model Wish {
+  // 찜 아이디 (Primary Key)
   id        String   @id @default(uuid())
+  // 사용자 아이디 (Forien Key)
   userId    String
+  // 장소 아이디 (Forien Key)
   placeId   String
+  // 찜 메모
   comment   String?
+
+  user  User  @relation(fields: [userId], references: [id])
+  place Place @relation(fields: [placeId], references: [id])
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  user     User   @relation(fields: [userId], references: [id])
-  place    Place  @relation(fields: [placeId], references: [id])
-  
   @@index([userId])
   @@index([placeId])
 }
 
-model Event {
-  id        String   @id @default(uuid())
-  placeId   String
-  date      DateTime
-  note      String?
+model Travel {
+  // 여행 계획 (Primary Key)
+  id          String   @id @default(uuid())
+  // 사용자 아이디 (Forien Key)
+  userId      String
+  // 여행 계획 설명
+  description String
+  // 여행 시작 날짜
+  startDate   DateTime
+  // 여행 종료 날짜
+  endDate     DateTime
 
+  days Day[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Day {
+  // 일별 계획 아이디 (Primary Key)
+  id       String @id @default(uuid())
+  // 여행 계획 아이디 (Forien Key)
+  travelId String
+  // 일차 (ex. 1, 2, 3, ...)
+  day      Int
+
+  travel Travel  @relation(fields: [travelId], references: [id])
+  events Event[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([travelId])
+}
+
+model Event {
+  // 일정 아이디 (Primary Key)
+  id      String @id @default(uuid())
+  // 일별 계획 아이디 (Forien Key)
+  dayId   String
+  // 장소 아이디 (Forien Key)
+  placeId String
+  // 순서 (ex. 1, 2, 3, ...)
+  order   Int
+
+  day   Day   @relation(fields: [dayId], references: [id])
+  place Place @relation(fields: [placeId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([dayId])
   @@index([placeId])
 }
