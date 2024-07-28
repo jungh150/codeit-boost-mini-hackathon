@@ -13,7 +13,7 @@ body {
   top: 0;
   width: 100%;
   background-color: #efefef;
-  z-index: 1;
+  z-index: 2;
 }
 
 ul.menu {
@@ -111,7 +111,8 @@ ul.menu > li.myPage {
 /* mypage.html */
 .container {
   display: flex;
-  margin-top: 66px;
+  margin-top: 66px; /* 내비게이션 바의 높이만큼 공간을 띄움 */
+  height: calc(100vh - 66px); /* 전체 화면 높이에서 내비게이션 바 높이만큼 빼기 */
 }
 
 .sidebar {
@@ -119,9 +120,9 @@ ul.menu > li.myPage {
   background-color: white;
   padding: 20px;
   box-shadow: 2px 0 5px rgba(0,0,0,0.1);
-  height: calc(100vh - 66px); 
-  position: fixed;
-  top: 66px; 
+  height: 100%; /* 사이드바가 부모 요소의 높이를 채우도록 설정 */
+  position: fixed; /* 고정 위치 */
+  top: 66px; /* 내비게이션 바 아래에 위치 */
   z-index: 1; 
 }
 
