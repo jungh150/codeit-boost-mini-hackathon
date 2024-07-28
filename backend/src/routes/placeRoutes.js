@@ -10,10 +10,10 @@ router.post('/', async (req, res) => {
         const { name, description, location, rating } = req.body;
         const newPlace = await prisma.place.create({
             data: {
-                name, 
-                description, 
-                location, 
-                rating
+                name,  // string
+                description, // string
+                location, // latitude, longitude 포함 json
+                rating // float
             }
         });
 
@@ -22,5 +22,7 @@ router.post('/', async (req, res) => {
         res.status(400).json({ message: error.message });
     }
 });
+
+
 
 export default router;
