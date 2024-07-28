@@ -1,21 +1,40 @@
 const express = require('express');
 const router = express.Router();
-const placeController = require('../controllers/placeController');
+const Place = require('../models/placeModel');
 
-// 여행지 라우트
-router.post('/', placeController.createPlace);
-router.put('/:placeId', placeController.updatePlace);
-router.delete('/:placeId', placeController.deletePlace);
-router.get('/', placeController.searchPlaces);
-router.get('/list', placeController.listPlaces);
-router.get('/:placeId', placeController.getPlaceDetails);
-router.post('/:placeId/wish', placeController.addWish);
-router.delete('/:placeId/wish', placeController.removeWish);
-router.get('/:placeId/wishCount', placeController.getWishCount);
-router.post('/:placeId/reviews', placeController.addReview);
-router.put('/:placeId/reviews/:reviewId', placeController.updateReview);
-router.delete('/:placeId/reviews/:reviewId', placeController.deleteReview);
-router.get('/:placeId/reviews', placeController.listReviews);
-router.get('/:placeId/reviews/:reviewId', placeController.getReviewDetails);
+// 여행지 생성
+router.post('/', async (req, res) => {
+    try {
+        const placeData = req.body;
+        const newPlace = new Place(placeData);
+        await newPlace.save();
+        res.status(201).json(newPlace);
+    } catch (error) {
+        res.status(400).json({ message: error.message });
+    }
+});
+
+// 여행지 목록 조회
+router.get('/', async (req, res) => {
+    try {
+        const places = await Place.find();
+        res.status(200).json(places);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
+
+// 여행지 상세 조회
+router.get('/:id', async (req, res) => {
+    try {
+        const place = await Place.findById(req.params.id);
+        if (!place) {
+            return res.status(404).json({ message: 'Place not found' });
+        }
+        res.status(200).json(place);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
 
 module.exports = router;
