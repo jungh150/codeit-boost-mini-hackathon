@@ -6,10 +6,15 @@ import FileStore from 'session-file-store';
 import passport from 'passport';
 import { PrismaClient } from '@prisma/client';
 
-import authRouter from './routes/authRoutes.js';
-
 const prisma = new PrismaClient();
 const app = express();
+
+import authRouter from './routes/authRoutes.js';
+import userRouter from './routes/userRoutes.js';
+
+// 라우트 설정
+app.use('/auth', authRouter);
+app.use('/users', userRouter);
 
 const fileStore = FileStore(session);
 const sessionSecret = process.env.SESSION_SECRET;
@@ -34,9 +39,6 @@ passport.deserializeUser((user, done) => done(null, user));
 
 // 미들웨어 설정
 app.use(express.json());
-
-// 라우트 설정
-app.use('/auth', authRouter);
 
 // 홈페이지 생성 (req.user는 passport의 직렬화된 사용자 정보가 저장됨)
 app.get('/', (req, res) => {

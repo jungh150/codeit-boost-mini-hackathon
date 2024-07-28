@@ -6,12 +6,31 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 const authRouter = express.Router();
 
+import session from 'express-session';
+import FileStore from 'session-file-store';
 import passport from 'passport';
 import { OAuth2Strategy as GoogleStrategy } from 'passport-google-oauth';
 
 // Google Client 관련 정보
 const googleClientId = process.env.GOOGLE_CLIENT_ID;
 const googleClientSecret = process.env.GOOGLE_CLIENT_SECRET;
+
+const fileStore = FileStore(session);
+const sessionSecret = process.env.SESSION_SECRET;
+
+// 미들웨어 설정
+authRouter.use(session({
+  secret: sessionSecret,
+  resave: false,
+  saveUninitialized: false,
+  store: new fileStore({ path: './sessions' }) // 세션 파일 저장 경로 설정
+}));
+
+authRouter.use(passport.initialize());
+authRouter.use(passport.session());
+
+passport.serializeUser((user, done) => done(null, user));
+passport.deserializeUser((user, done) => done(null, user));
 
 // 사용자 정보 데이터베이스 (추후에 데이터베이스로 대체)
 const users = [{
@@ -41,29 +60,40 @@ passport.use(new GoogleStrategy({
   clientSecret: googleCredentials.web.client_secret,
   callbackURL: googleCredentials.web.redirect_uris[0]
 },
-  (accessToken, refreshToken, profile, done) => {
-    console.log(profile);
-    // 사용자 정보가 이미 데이터베이스에 있는지 확인
-    let user = users.find(userInfo => userInfo.email === profile.emails[0].value);
-    if (user) {
-      // 사용자 정보 업데이트
-      user.provider = profile.provider;
-      user.providerId = profile.id;
-      user.token = accessToken;
-      user.name = profile.displayName;
-    } else {
-      // 새로운 사용자 정보 추가
-      user = {
-        id: users.length + 1, // 고유 ID 할당 (랜덤 값 필요 시 shortid.generate() 사용)
-        provider: profile.provider,
-        providerId: profile.id,
-        token: accessToken,
-        name: profile.displayName,
-        email: profile.emails[0].value
+  async (accessToken, refreshToken, profile, done) => {
+    try {
+      // 사용자 정보가 이미 데이터베이스에 있는지 확인
+      let user = await prisma.user.findUnique({
+        where: { email: profile.emails[0].value },
+      });
+
+      if (user) {
+        // 사용자 정보 업데이트
+        user = await prisma.user.update({
+          where: { id: user.id },
+          data: {
+            provider: profile.provider,
+            providerId: profile.id,
+            token: accessToken,
+            name: profile.displayName,
+          },
+        });
+      } else {
+        // 새로운 사용자 정보 추가
+        user = await prisma.user.create({
+          data: {
+            provider: profile.provider,
+            providerId: profile.id,
+            token: accessToken,
+            name: profile.displayName,
+            email: profile.emails[0].value,
+          },
+        });
       }
-      users.push(user);
+      return done(null, user);
+    } catch (error) {
+      return done(error, null);
     }
-    return done(null, user);
   }
 ));
 
