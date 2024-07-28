@@ -1,12 +1,12 @@
 import { Router } from 'express';
 import { PrismaClient } from '@prisma/client';
+import asyncHandler from '../utils/asyncHandler.js'; // 1. 비동기 핸들러 래퍼 가져오기
 
 const router = Router();
 const prisma = new PrismaClient();
 
 // 여행지 생성
-router.post('/', async (req, res) => {
-    try{
+router.post('/', asyncHandler(async (req, res) => { // 2. 비동기 핸들러로 감싸주기
         const { name, description, location, rating } = req.body;
         const newPlace = await prisma.place.create({
             data: {
@@ -18,14 +18,11 @@ router.post('/', async (req, res) => {
         });
 
         res.status(201).json(newPlace);
-    } catch (error){
-        res.status(400).json({ message: error.message });
-    }
-});
+
+}));
 
 // 여행지 수정
-router.put('/:placeId', async (req, res) => {
-    try{
+router.put('/:placeId', asyncHandler(async (req, res) => {
         const { placeId } = req.params;
         const { name, description, location, rating } = req.body;
 
@@ -40,14 +37,11 @@ router.put('/:placeId', async (req, res) => {
             data: updateData // 중괄호 넣으면 안 됨
         });
         res.status(200).json(updatedPlace);
-    } catch (error){
-        res.status(400).json({ message: error.message });
-    }
-});
+}));
 
 // 여행지 삭제
-router.delete('/:placeId', async (req, res) => {
-    try {
+router.delete('/:placeId', asyncHandler(async (req, res) => {
+
         const { placeId } = req.params;
 
         await prisma.place.delete({
@@ -55,14 +49,11 @@ router.delete('/:placeId', async (req, res) => {
         });
 
         res.status(200).json({ message: "successfully deleted" }); // 상태코드 204는 바디 못보냄, send보다 json으로 하는게 일관성있음
-    } catch ( error ){
-        res.status(500).json({ message: error.message });
-    }
-}); // 세미콜론 잊지말기
+
+})); // 세미콜론 잊지말기
 
 // 여행지 검색
-router.get('/', async (req, res) => {
-    try {
+router.get('/', asyncHandler(async (req, res) => {
         const { name, description, rating } = req.query;
 
         const where = {};
@@ -75,38 +66,31 @@ router.get('/', async (req, res) => {
         });
 
         res.status(200).json(places);
-    } catch ( error ){
-        res.status(500).json({ message: error.message });
-    }
-});
+
+}));
 
 // 여행지 목록 조회
-router.get('/', async (req, res) => {
-    try {
+router.get('/', asyncHandler(async (req, res) => {
         const places = await prisma.place.findMany();
         res.status(200).json(places); 
-    } catch ( error ) {
-        res.status(400).json({ message: error.message });
-    }
-});
+}));
 
 // 여행지 상세 조회
-router.get('/:placeId', async (req, res) => {
-    try{
+router.get('/:placeId', asyncHandler(async (req, res) => {
+
         const { placeId } = req.params;
         const place = await prisma.place.findUnique({
             where: { id: placeId }
         });
         if(!place){
-            return res.status(404).json({ message: 'Place not found'}); // return?
+            return res.status(404).json({ message: 'Place not found'}); // return - 함수 실행을 명확히 종료시킴
         } else{
             res.status(200).json(place);
         }
 
-    } catch ( error ){
-        res.status(500).json({ message: error.message });
-    }
-});
+}));
+
+
 
 
 export default router;
