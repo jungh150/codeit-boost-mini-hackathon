@@ -90,7 +90,79 @@ router.get('/:placeId', asyncHandler(async (req, res) => {
 
 }));
 
+// 여행지 찜 등록
+router.post('/:placeId/wish', asyncHandler(async (req, res) => {
+    const { placeId } = req.params;
+    const { userId, comment } = req.body;
+    const newWish = await prisma.wish.create({
+        data: {
+            userId,
+            placeId,
+            comment
+        }
+    });
+    res.status(201).json(newWish);
+}));
 
+// 여행지 찜 삭제
+router.delete('/:placeId/wish', asyncHandler(async (req, res) => {
+    const { placeId } = req.params;
+    const { userId } = req.body;
+    await prisma.wish.deleteMany({ // many가 안전하기는 할 듯.. 다른데서 확실히 1대1 보장받는거 아니면
+        where: {
+            userId,
+            placeId // 순서 안중요
+        }
+    });
+    res.status(200).json({message: "성공적으로 삭제되었습니다."});
+}));
+/////////////////////////////////////////////////////////////////////////////////테스트완
+
+// 여행지 찜 수 조회
+router.get('/:placeId/wishCount', asyncHandler(async (req, res) => {
+    const { placeId } = req.params;
+    const count = await prisma.wish.count({
+        where: {placeId}
+    });
+    res.status(200).json({count});
+}));
+
+// 여행지 리뷰 등록
+router.post('/:placeId/reviews', asyncHandler(async (req, res) => {
+    const { placeId } = req.params;
+    const { userId, comment } = req.body;
+    const newWish = await prisma.wish.create({
+        data: {
+            userId,
+            placeId,
+            comment
+        }
+    });
+    res.status(201).json(newWish);
+}));
+
+// 여행지 찜 삭제
+router.delete('/:placeId/wish', asyncHandler(async (req, res) => {
+    const { placeId } = req.params;
+    const { userId } = req.body;
+    await prisma.wish.deleteMany({ // many가 안전하기는 할 듯.. 다른데서 확실히 1대1 보장받는거 아니면
+        where: {
+            userId,
+            placeId // 순서 안중요
+        }
+    });
+    res.status(200).json({message: "성공적으로 삭제되었습니다."});
+}));
+
+
+// 여행지 찜 수 조회
+router.get('/:placeId/wishCount', asyncHandler(async (req, res) => {
+    const { placeId } = req.params;
+    const count = await prisma.wish.count({
+        where: {placeId}
+    });
+    res.status(200).json({count});
+}));
 
 
 export default router;
