@@ -136,6 +136,44 @@ userRouter.get('/my/wishes/:wishId', asyncHandler(async (req, res) => {
   }
 }));
 
+// 내 리뷰 전체 조회
+userRouter.get('/my/reviews', asyncHandler(async (req, res) => {
+  const myEmail = req.user.email;
+  console.log(myEmail);
+  const user = await prisma.user.findUnique({
+    where: { email: myEmail },
+    include: {
+      reviews: true,
+    },
+  });
+  if (user) {
+    res.send(user.reviews);
+  } else {
+    res.status(404).send({ message: 'Cannot find given email.' });
+  }
+}));
+
+// 내 리뷰 상세 조회
+userRouter.get('/my/reviews/:reviewId', asyncHandler(async (req, res) => {
+  const { reviewId } = req.params;
+  const myEmail = req.user.email;
+  console.log(myEmail);
+  const user = await prisma.user.findUnique({
+    where: { email: myEmail },
+    include: {
+      reviews: true,
+    },
+  });
+  const review = user.reviews.findUnique({
+    where: { id: reviewId },
+  });
+  if (review) {
+    res.send(review);
+  } else {
+    res.status(404).send({ message: 'Cannot find wish.' });
+  }
+}));
+
 // 사용자 생성
 userRouter.post('/', asyncHandler(async (req, res) => {
   const user = await prisma.user.create({
