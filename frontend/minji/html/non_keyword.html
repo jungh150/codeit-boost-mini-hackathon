@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>트립잇</title>
+        <link rel="stylesheet" href="../css/styles.css">
+        <script defer src="../js/non_keyword.js"></script>
+    </head>
+
+
+    <!--  Body -->
+    <body>
+        <div style="color: black; font-size: 50px; font-family: Inter; font-weight: 400; word-wrap: break-word">키워드 검색 결과</div>
+        <div style="color: black; font-size: 30px; font-family: Inter; font-weight: 400; word-wrap: break-word">등록된 장소가 없습니다. <br/>새로 등록하시겠습니까?</div>
+        <button class="Rectangle57" id="openModalBtn" style="width: 240px; height: 64px; background: #ECECEC; border-radius: 26px; border: 1px black solid; cursor: pointer;">장소 등록하기</button>
+         <!-- Modal -->
+        <div id="myModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2>장소 등록</h2>
+                <form id="placeForm">
+                    <label for="placeName">장소 명 :</label>
+                    <input type="text" id="placeName" name="placeName" required>
+                    <br>
+                    <label for="placeAddress">장소 주소:</label>
+                    <input type="text" id="placeAddress" name="placeAddress" required>
+                    <br>
+                    <label for="placeImg">장소 이미지:</label>
+                    <input type="file" id="placeImg" name="placeImg" accept="image/*" required>
+                    <br>
+                    <button type="submit">등록</button>
+                </form>
+            </div>
+        </div>
+        
+    </body>
+</html>
