@@ -5,6 +5,7 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 const authRouter = express.Router();
+authRouter.use(express.json());
 
 import session from 'express-session';
 import FileStore from 'session-file-store';
