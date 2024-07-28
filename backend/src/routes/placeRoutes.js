@@ -80,4 +80,15 @@ router.get('/', async (req, res) => {
     }
 });
 
+// 여행지 목록 조회
+router.get('/', async (req, res) => {
+    try {
+        const places = await prisma.place.findMany();
+        res.status(200).json(places); 
+    } catch ( error ) {
+        res.status(400).json({ message: error.message });
+    }
+});
+
+
 export default router;
