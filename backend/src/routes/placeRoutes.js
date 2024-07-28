@@ -2,11 +2,11 @@ import { Router } from 'express';
 import { PrismaClient } from '@prisma/client';
 import asyncHandler from '../utils/asyncHandler.js'; // 1. 비동기 핸들러 래퍼 가져오기
 
-const router = Router();
+const placeRouter = Router();
 const prisma = new PrismaClient();
 
 // 여행지 생성
-router.post('/', asyncHandler(async (req, res) => { // 2. 비동기 핸들러로 감싸주기
+placeRouter.post('/', asyncHandler(async (req, res) => { // 2. 비동기 핸들러로 감싸주기
         const { name, description, location, rating } = req.body;
         const newPlace = await prisma.place.create({
             data: {
@@ -22,7 +22,7 @@ router.post('/', asyncHandler(async (req, res) => { // 2. 비동기 핸들러로
 }));
 
 // 여행지 수정
-router.put('/:placeId', asyncHandler(async (req, res) => {
+placeRouter.put('/:placeId', asyncHandler(async (req, res) => {
         const { placeId } = req.params;
         const { name, description, location, rating } = req.body;
 
@@ -40,7 +40,7 @@ router.put('/:placeId', asyncHandler(async (req, res) => {
 }));
 
 // 여행지 삭제
-router.delete('/:placeId', asyncHandler(async (req, res) => {
+placeRouter.delete('/:placeId', asyncHandler(async (req, res) => {
 
         const { placeId } = req.params;
 
@@ -53,7 +53,7 @@ router.delete('/:placeId', asyncHandler(async (req, res) => {
 })); // 세미콜론 잊지말기
 
 // 여행지 검색
-router.get('/', asyncHandler(async (req, res) => {
+placeRouter.get('/', asyncHandler(async (req, res) => {
         const { name, description, rating } = req.query;
 
         const where = {};
@@ -70,13 +70,13 @@ router.get('/', asyncHandler(async (req, res) => {
 }));
 
 // 여행지 목록 조회
-router.get('/', asyncHandler(async (req, res) => {
+placeRouter.get('/', asyncHandler(async (req, res) => {
         const places = await prisma.place.findMany();
         res.status(200).json(places); 
 }));
 
 // 여행지 상세 조회
-router.get('/:placeId', asyncHandler(async (req, res) => {
+placeRouter.get('/:placeId', asyncHandler(async (req, res) => {
 
         const { placeId } = req.params;
         const place = await prisma.place.findUnique({
@@ -91,7 +91,7 @@ router.get('/:placeId', asyncHandler(async (req, res) => {
 }));
 
 // 여행지 찜 등록
-router.post('/:placeId/wish', asyncHandler(async (req, res) => {
+placeRouter.post('/:placeId/wish', asyncHandler(async (req, res) => {
     const { placeId } = req.params;
     const { userId, comment } = req.body;
     const newWish = await prisma.wish.create({
@@ -105,7 +105,7 @@ router.post('/:placeId/wish', asyncHandler(async (req, res) => {
 }));
 
 // 여행지 찜 삭제
-router.delete('/:placeId/wish', asyncHandler(async (req, res) => {
+placeRouter.delete('/:placeId/wish', asyncHandler(async (req, res) => {
     const { placeId } = req.params;
     const { userId } = req.body;
     await prisma.wish.deleteMany({ // many가 안전하기는 할 듯.. 다른데서 확실히 1대1 보장받는거 아니면
@@ -119,7 +119,7 @@ router.delete('/:placeId/wish', asyncHandler(async (req, res) => {
 /////////////////////////////////////////////////////////////////////////////////테스트완
 
 // 여행지 찜 수 조회
-router.get('/:placeId/wishCount', asyncHandler(async (req, res) => {
+placeRouter.get('/:placeId/wishCount', asyncHandler(async (req, res) => {
     const { placeId } = req.params;
     const count = await prisma.wish.count({
         where: {placeId}
@@ -128,7 +128,7 @@ router.get('/:placeId/wishCount', asyncHandler(async (req, res) => {
 }));
 
 // 여행지 리뷰 등록
-router.post('/:placeId/reviews', asyncHandler(async (req, res) => {
+placeRouter.post('/:placeId/reviews', asyncHandler(async (req, res) => {
     const { placeId } = req.params;
     const { userId, comment } = req.body;
     const newWish = await prisma.wish.create({
@@ -142,7 +142,7 @@ router.post('/:placeId/reviews', asyncHandler(async (req, res) => {
 }));
 
 // 여행지 찜 삭제
-router.delete('/:placeId/wish', asyncHandler(async (req, res) => {
+placeRouter.delete('/:placeId/wish', asyncHandler(async (req, res) => {
     const { placeId } = req.params;
     const { userId } = req.body;
     await prisma.wish.deleteMany({ // many가 안전하기는 할 듯.. 다른데서 확실히 1대1 보장받는거 아니면
@@ -156,7 +156,7 @@ router.delete('/:placeId/wish', asyncHandler(async (req, res) => {
 
 
 // 여행지 찜 수 조회
-router.get('/:placeId/wishCount', asyncHandler(async (req, res) => {
+placeRouter.get('/:placeId/wishCount', asyncHandler(async (req, res) => {
     const { placeId } = req.params;
     const count = await prisma.wish.count({
         where: {placeId}
@@ -165,4 +165,4 @@ router.get('/:placeId/wishCount', asyncHandler(async (req, res) => {
 }));
 
 
-export default router;
+export default placeRouter;
