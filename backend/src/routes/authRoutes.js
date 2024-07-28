@@ -1,16 +1,13 @@
 import * as dotenv from 'dotenv';
 dotenv.config();
 import express from 'express';
+import { PrismaClient } from '@prisma/client';
 
+const prisma = new PrismaClient();
 const authRouter = express.Router();
 
-import session from 'express-session';
-import FileStore from 'session-file-store';
 import passport from 'passport';
 import { OAuth2Strategy as GoogleStrategy } from 'passport-google-oauth';
-
-// FileStore를 세션에 연결
-const fileStore = FileStore(session);
 
 // Google Client 관련 정보
 const googleClientId = process.env.GOOGLE_CLIENT_ID;
@@ -37,24 +34,6 @@ const googleCredentials = {
     ]
   }
 }
-
-// 미들웨어 설정
-authRouter.use(session({
-  secret: 'keyboard cat',
-  resave: false,
-  saveUninitialized: false,
-  store: new fileStore({ path: './sessions' }) // 세션 파일 저장 경로 설정
-}));
-
-// Passport 미들웨어 초기화
-authRouter.use(passport.initialize());
-authRouter.use(passport.session());
-
-// Passport의 직렬화 및 역직렬화 설정
-// serializeUser : 로그인 / 회원가입 후 1회 실행
-// deserializeUser : 페이지 전환시 마다 실행 
-passport.serializeUser((user, done) => done(null, user));
-passport.deserializeUser((user, done) => done(null, user));
 
 // Passport (Google) - 구글 로그인시 정보 GET
 passport.use(new GoogleStrategy({
