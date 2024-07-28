@@ -64,10 +64,27 @@ userRouter.get('/my', asyncHandler(async (req, res) => {
 }));
 
 // 사용자의 찜 전체 조회
-userRouter.get('/:email/wishes', asyncHandler(async (req, res) => {
-  const { email } = req.params;
+// userRouter.get('/:email/wishes', asyncHandler(async (req, res) => {
+//   const { email } = req.params;
+//   const user = await prisma.user.findUnique({
+//     where: { email },
+//     include: {
+//       wishes: true,
+//     },
+//   });
+//   if (user) {
+//     res.send(user.wishes);
+//   } else {
+//     res.status(404).send({ message: 'Cannot find given email.' });
+//   }
+// }));
+
+// 내 찜 전체 조회
+userRouter.get('/my/wishes', asyncHandler(async (req, res) => {
+  const myEmail = req.user.email;
+  console.log(myEmail);
   const user = await prisma.user.findUnique({
-    where: { email },
+    where: { email: myEmail },
     include: {
       wishes: true,
     },
@@ -79,7 +96,46 @@ userRouter.get('/:email/wishes', asyncHandler(async (req, res) => {
   }
 }));
 
-// 유저 생성
+// 사용자의 찜 상세 조회
+// userRouter.get('/:email/wishes/:wishId', asyncHandler(async (req, res) => {
+//   const { email, wishId } = req.params;
+//   const user = await prisma.user.findUnique({
+//     where: { email },
+//     include: {
+//       wishes: true,
+//     },
+//   });
+//   const wish = user.wishes.findUnique({
+//     where: { id: wishId },
+//   });
+//   if (wish) {
+//     res.send(wish);
+//   } else {
+//     res.status(404).send({ message: 'Cannot find wish.' });
+//   }
+// }));
+
+// 내 찜 상세 조회
+userRouter.get('/:email/wishes/:wishId', asyncHandler(async (req, res) => {
+  const myEmail = req.user.email;
+  console.log(myEmail);
+  const user = await prisma.user.findUnique({
+    where: { email: myEmail },
+    include: {
+      wishes: true,
+    },
+  });
+  const wish = user.wishes.findUnique({
+    where: { id: wishId },
+  });
+  if (wish) {
+    res.send(wish);
+  } else {
+    res.status(404).send({ message: 'Cannot find wish.' });
+  }
+}));
+
+// 사용자 생성
 userRouter.post('/', asyncHandler(async (req, res) => {
   const user = await prisma.user.create({
     data: req.body,
