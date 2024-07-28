@@ -24,3 +24,30 @@
   
     background: #b8b7b7;
   }
+  
+  .h2{
+    /* 일정구체적으로 표시 */
+  
+    position: absolute;
+    width: 456px;
+    height: 353px;
+    left: 26px;
+    top: 646px;
+  
+  
+  }
+  
+  .h2_p1{/* Rectangle 35 */
+  
+    position: absolute;
+    width: 456px;
+    height: 56.2px;
+    left: 26px;
+    top: 646px;
+  
+    background: rgba(0, 0, 0, 0.85);
+    border-radius: 27.1958px 27.1958px 0px 0px;
+  
+    
+  }
+  
