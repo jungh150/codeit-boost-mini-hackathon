@@ -6,7 +6,8 @@ body {
 .nav {
   border-bottom: 1px solid #dddddd;
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
+  align-items: center;
   padding: 16px;
   position: fixed;
   top: 0;
@@ -17,14 +18,14 @@ body {
 
 ul.menu {
   display: flex;
-  margin: 0;
-  list-style: none;
   margin-right: 50px;
+  list-style: none;
+  margin-left: auto; /* 오른쪽으로 정렬 */
 }
 
 ul.menu > li {
   margin: 16px;
-    font-family: 'NanumSquare Neo OTF';
+  font-family: 'NanumSquare Neo OTF';
   font-weight: 600;
 }
 
@@ -32,8 +33,34 @@ ul.menu > li.myPage {
   color: #001BAB;
 }
 
-/* home.html  */
+.search-container {
+  display: flex;
+  align-items: center;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
 
+.search-icon {
+  cursor: pointer;
+  font-size: 1.5em;
+  margin-right: 10px;
+}
+
+.search-block {
+  display: flex;
+  align-items: center;
+}
+
+#searchInput {
+  padding: 10px;
+  font-size: 1em;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 300px;
+}
+
+/* home.html */
 .main {
   text-align: center;
   font-size: 28px;
@@ -54,6 +81,7 @@ ul.menu > li.myPage {
   align-items: flex-end; 
   text-align: left;
   padding: 50px 16px;
+  margin: 0 100px;
 }
 
 .description img {
@@ -78,7 +106,6 @@ ul.menu > li.myPage {
   font-weight: 500;
   color: #3d3d3d;
 }
-
 
 
 /* mypage.html */
