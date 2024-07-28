@@ -8,6 +8,7 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 const app = express();
+app.use(express.json());
 
 import authRouter from './routes/authRoutes.js';
 import userRouter from './routes/userRoutes.js';
@@ -36,9 +37,6 @@ app.use(passport.session());
 // deserializeUser : 페이지 전환시 마다 실행 
 passport.serializeUser((user, done) => done(null, user));
 passport.deserializeUser((user, done) => done(null, user));
-
-// 미들웨어 설정
-app.use(express.json());
 
 // 홈페이지 생성 (req.user는 passport의 직렬화된 사용자 정보가 저장됨)
 app.get('/', (req, res) => {
