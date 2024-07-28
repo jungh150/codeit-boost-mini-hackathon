@@ -116,7 +116,8 @@ userRouter.get('/my/wishes', asyncHandler(async (req, res) => {
 // }));
 
 // 내 찜 상세 조회
-userRouter.get('/:email/wishes/:wishId', asyncHandler(async (req, res) => {
+userRouter.get('/my/wishes/:wishId', asyncHandler(async (req, res) => {
+  const { wishId } = req.params;
   const myEmail = req.user.email;
   console.log(myEmail);
   const user = await prisma.user.findUnique({
