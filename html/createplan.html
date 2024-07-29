@@ -26,20 +26,20 @@
           </ul>
       </div>
 
+<!-- main -->
 
-    <div class="container">
-        <h1>나만의 여행 만들기</h1>
-        <input type="text" id="title" placeholder="여행의 제목을 입력하세요." />
-        <input type="date" id="startDate" />
-        <input type="date" id="endDate" />
-        <button id="createSchedule"><b>여행 일정 생성하기</b></button>
-        
-        <div id="scheduleList">
-            <h2>나의 여행</h2>
-            <ul id="schedules"></ul>
-        </div>
+<div class="container">
+    <h1>나만의 여행 만들기</h1>
+    <input type="text" id="title" placeholder="여행의 제목을 입력하세요." />
+    <input type="date" id="startDate" />
+    <input type="date" id="endDate" />
+    <button id="createSchedule" onclick="generateItinerary()"><b>여행 일정 생성하기</b></button>
+    
+    <div id="scheduleList">
+        <h2>나의 여행</h2>
+        <div id="itinerary" class="itinerary"></div>
     </div>
-    <script src="../js/createplan.js"></script>
-    <script src="../js/script.js"></script>
-</body>
-</html>
+</div>
+<script src="../js/createplan.js"></script>
+<script src="../js/script.js"></script>
+
