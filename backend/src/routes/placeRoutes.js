@@ -154,4 +154,42 @@ placeRouter.delete('/:placeId/wish', ensureAuthenticated, asyncHandler(async (re
     res.status(200).json({message: "성공적으로 삭제되었습니다."});
 }));
 
+
+// 여행지 찜 수 조회
+placeRouter.get('/:placeId/wishCount', asyncHandler(async (req, res) => {
+    const { placeId } = req.params;
+    const count = await prisma.wish.count({
+        where: {placeId}
+    });
+    res.status(200).json({count});
+}));
+
+// 여행지 리뷰 등록
+placeRouter.post('/:placeId/reviews', ensureAuthenticated, asyncHandler(async (req, res) => {
+    const { placeId } = req.params;
+    const { id } = req.user;
+    const { rating, comment } = req.body;
+    const newReview = await prisma.review.create({
+        data: {
+            userId: id,
+            placeId,
+            rating,
+            comment
+        }
+    });
+    res.status(201).json(newReview);
+}));
+
+// 여행지 리뷰 목록 조회
+placeRouter.get('/:placeId/reviews', asyncHandler(async (req, res) => {
+    const { placeId } = req.params;
+    const reviews = await prisma.review.findMany({
+        where: {
+            placeId
+        }
+    });
+    res.status(200).json(reviews);
+}));
+
+
 export default placeRouter;
