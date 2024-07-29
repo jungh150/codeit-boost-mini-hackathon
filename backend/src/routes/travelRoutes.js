@@ -40,11 +40,39 @@ travelRouter.get('/:travelId', asyncHandler(async (req, res) => {
   const { travelId } = req.params;
   const travel = await prisma.travel.findUnique({
     where: { id: travelId },
+    include: { days: { include: { events: true } } },
   });
   if (travel) {
     res.send(travel);
   } else {
     res.status(404).send({ message: 'Cannot find given travel.' });
+  }
+}));
+
+// 여행 계획의 특정 일별 계획 조회
+travelRouter.get('/:travelId/day/:dayId', asyncHandler(async (req, res) => {
+  const { dayId } = req.params;
+  const day = await prisma.day.findUnique({
+    where: { id: dayId },
+    include: { events: true },
+  });
+  if (day) {
+    res.send(day);
+  } else {
+    res.status(404).send({ message: 'Cannot find given day.' });
+  }
+}));
+
+// 여행 계획의 일별 계획의 특정 일정 조회
+travelRouter.get('/:travelId/day/:dayId/event/:eventId', asyncHandler(async (req, res) => {
+  const { eventId } = req.params;
+  const event = await prisma.event.findUnique({
+    where: { id: eventId },
+  });
+  if (event) {
+    res.send(event);
+  } else {
+    res.status(404).send({ message: 'Cannot find given event.' });
   }
 }));
 
@@ -72,7 +100,7 @@ travelRouter.patch('/:travelId', asyncHandler(async (req, res) => {
   res.send(travel);
 }));
 
-// 사용자 삭제
+// 여행 계획 삭제
 travelRouter.delete('/:travelId', asyncHandler(async (req, res) => {
   const { travelId } = req.params;
   await prisma.travel.delete({
