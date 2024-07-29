@@ -40,15 +40,23 @@ model User {
 
 model Place {
   // 장소 아이디 (Primary Key)
-  id          String @id @default(uuid())
+  id           String  @id @default(uuid())
   // 장소 이름
-  name        String
+  name         String
   // 장소 설명
-  description String
+  description  String?
   // 장소 위치 (latitude와 longitude를 포함하는 JSON)
-  location    Json
+  location     Json
   // 평균 평점
-  rating      Float?
+  rating       Float?
+  // 지역 (ex: 서울특별시 등)
+  region       String?
+  // 이미지 URL
+  imageUrl     String?
+  // 운영시간
+  openingHours String?
+  // 전화번호
+  phoneNumber  String?
 
   reviews Review[]
   wishes  Wish[]
