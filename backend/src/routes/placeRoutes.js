@@ -40,16 +40,32 @@ const ensureAuthenticated = (req, res, next) => {
     }
   };
 
+  // 여행지 평점 업데이트 함수
+async function updatePlaceRating(placeId) {
+    const reviews = await prisma.review.findMany({
+        where: { placeId },
+        select: { rating: true }
+    });
+
+    const totalRating = reviews.reduce((sum, review) => sum + review.rating, 0);
+    const avgRating = totalRating / reviews.length;
+
+    await prisma.place.update({
+        where: { id: placeId },
+        data: { rating: avgRating }
+    });
+}
+
 // 여행지 생성 수정 삭제 : userId도 함께 받아서 누가 생성했는지 알면 좋을텐데..
 // 여행지 생성
 placeRouter.post('/', ensureAuthenticated, asyncHandler(async (req, res) => { // 2. 비동기 핸들러로 감싸주기
-        const { name, description, location, rating } = req.body;
+        const { name, description, location } = req.body;
         const newPlace = await prisma.place.create({
             data: {
                 name,  // string
                 description, // string
                 location, // latitude, longitude 포함 json
-                rating // float
+                rating: 0.0 // float
             }
         }); 
 
@@ -60,13 +76,12 @@ placeRouter.post('/', ensureAuthenticated, asyncHandler(async (req, res) => { //
 // 여행지 수정
 placeRouter.put('/:placeId', ensureAuthenticated, asyncHandler(async (req, res) => {
         const { placeId } = req.params;
-        const { name, description, location, rating } = req.body;
+        const { name, description, location } = req.body;
 
         const updateData = {};
         if( name ) updateData.name = name; // req body에 일부 필드만 오더라도 수정 가능
         if( description ) updateData.description = description;
         if( location ) updateData.location = location;
-        if( rating ) updateData.rating = rating;
 
         const updatedPlace = await prisma.place.update({
             where: { id: placeId },
@@ -177,6 +192,10 @@ placeRouter.post('/:placeId/reviews', ensureAuthenticated, asyncHandler(async (r
             comment
         }
     });
+
+    // 평균 평점 업데이트
+    await updatePlaceRating(placeId);
+
     res.status(201).json(newReview);
 }));
 
@@ -190,6 +209,8 @@ placeRouter.get('/:placeId/reviews', asyncHandler(async (req, res) => {
     });
     res.status(200).json(reviews);
 }));
+
+
 
 
 export default placeRouter;
