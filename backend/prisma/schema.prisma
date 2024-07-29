@@ -40,15 +40,23 @@ model User {
 
 model Place {
   // 장소 아이디 (Primary Key)
-  id          String @id @default(uuid())
+  id           String  @id @default(uuid())
   // 장소 이름
-  name        String
+  name         String
+  // 지역 (ex: 서울특별시 등)
+  region       String?
   // 장소 설명
-  description String
+  description  String?
   // 장소 위치 (latitude와 longitude를 포함하는 JSON)
-  location    Json
+  location     Json
   // 평균 평점
-  rating      Float?
+  rating       Float?
+  // 이미지 URL
+  imageUrl     String?
+  // 운영시간
+  openingHours String?
+  // 전화번호
+  phoneNumber  String?
 
   reviews Review[]
   wishes  Wish[]
@@ -68,10 +76,10 @@ model Review {
   // 리뷰 평점
   rating  Int
   // 리뷰 평점
-  comment String
+  comment String?
 
-  user  User  @relation(fields: [userId], references: [id])
-  place Place @relation(fields: [placeId], references: [id])
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  place Place @relation(fields: [placeId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -90,8 +98,8 @@ model Wish {
   // 찜 메모
   comment String?
 
-  user  User  @relation(fields: [userId], references: [id])
-  place Place @relation(fields: [placeId], references: [id])
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  place Place @relation(fields: [placeId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -106,13 +114,13 @@ model Travel {
   // 사용자 아이디 (Forien Key)
   userId      String
   // 여행 계획 설명
-  description String
+  description String?
   // 여행 시작 날짜
   startDate   DateTime
   // 여행 종료 날짜
   endDate     DateTime
 
-  user User  @relation(fields: [userId], references: [id])
+  user User  @relation(fields: [userId], references: [id], onDelete: Cascade)
   days Day[]
 
   createdAt DateTime @default(now())
@@ -127,7 +135,7 @@ model Day {
   // 일차 (ex. 1, 2, 3, ...)
   day      Int
 
-  travel Travel  @relation(fields: [travelId], references: [id])
+  travel Travel  @relation(fields: [travelId], references: [id], onDelete: Cascade)
   events Event[]
 
   createdAt DateTime @default(now())
@@ -145,10 +153,10 @@ model Event {
   placeId String
   // 순서 (ex. 1, 2, 3, ...)
   order   Int
-  comment String
+  comment String?
 
-  day   Day   @relation(fields: [dayId], references: [id])
-  place Place @relation(fields: [placeId], references: [id])
+  day   Day   @relation(fields: [dayId], references: [id], onDelete: Cascade)
+  place Place @relation(fields: [placeId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
