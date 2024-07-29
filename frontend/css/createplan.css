@@ -7,7 +7,7 @@ body {
 
 .container {
     display: flex;
-    font-family: 'NanumSquare Neo OTF';
+    font-family: 'NanumSquareNeo';
     flex-direction: column;
     align-items: flex-start;
     background: white;
@@ -50,7 +50,7 @@ button {
     border-radius: 4px;
     cursor: pointer;
     width: 100%;
-    font-family: 'NanumSquare Neo OTF';
+    font-family: 'NanumSquareNeo';
 }
 
 button:hover {

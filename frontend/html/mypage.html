@@ -6,25 +6,24 @@
     <link rel="stylesheet" href="../css/style.css">
     <link href="https://hangeul.pstatic.net/hangeul_static/css/nanum-square-neo.css" rel="stylesheet">
     <script src="../js/mypage.js" defer></script>
+    <script src="../js/script.js" defer></script>
 </head>
 <body>
     <div class="nav">
-        <!-- 추가한 검색창 부분 -->
-          <div class="search-container">
-              <div class="search-icon" id="searchIcon">&#128269;</div>
-              <div class="search-block">
-                  <input type="text" id="searchInput" placeholder="여행 지역 또는 키워드를 입력해주세요.">
+        <div class="search-container">
+            <div class="search-icon" id="searchIcon">&#128269;</div>
+            <div class="search-block">
+                <input type="text" id="searchInput" placeholder="여행 지역 또는 키워드를 입력해주세요.">
+                <button id="searchButton">검색</button>
               </div>
-          </div>
-           <!-- 여기까지  -->
-            
-          <ul class="menu">
-              <li>여행지 검색</li>
-              <li>여행일정 만들기</li>
-              <li>회원가입</li>
-              <li class="myPage">마이페이지</li>
-          </ul>
-      </div>
+        </div>
+
+        <ul class="menu">
+            <li class="createPlan">여행일정 만들기</li>
+            <li>회원가입</li>
+            <li class="myPage">마이페이지</li>
+        </ul>
+    </div>
 
       <div class="container">
         <nav class="sidebar">
