@@ -145,6 +145,7 @@ model Event {
   placeId String
   // 순서 (ex. 1, 2, 3, ...)
   order   Int
+  comment String
 
   day   Day   @relation(fields: [dayId], references: [id])
   place Place @relation(fields: [placeId], references: [id])
