@@ -89,7 +89,7 @@ placeRouter.delete('/:placeId', ensureAuthenticated, asyncHandler(async (req, re
 })); // 세미콜론 잊지말기
 
 // 여행지 검색
-router.get('/', asyncHandler(async (req, res) => {
+placeRouter.get('/', asyncHandler(async (req, res) => {
         const { name, description, rating } = req.query;
 
         const where = {};
@@ -106,13 +106,13 @@ router.get('/', asyncHandler(async (req, res) => {
 }));
 
 // 여행지 목록 조회
-router.get('/', asyncHandler(async (req, res) => {
+placeRouter.get('/', asyncHandler(async (req, res) => {
         const places = await prisma.place.findMany();
         res.status(200).json(places); 
 }));
 
 // 여행지 상세 조회
-router.get('/:placeId', asyncHandler(async (req, res) => {
+placeRouter.get('/:placeId', asyncHandler(async (req, res) => {
 
         const { placeId } = req.params;
         const place = await prisma.place.findUnique({
@@ -153,4 +153,4 @@ placeRouter.delete('/:placeId/wish', ensureAuthenticated, asyncHandler(async (re
     res.status(200).json({message: "성공적으로 삭제되었습니다."});
 }));
 
-export default router;
+export default placeRouter;
