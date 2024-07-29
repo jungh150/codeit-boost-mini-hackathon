@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
     <link rel="stylesheet" href="detail_page.css" />
+    <link
+      href="https://webfontworld.github.io/pretendard/Pretendard.css"
+      rel="stylesheet"
+    />
   </head>
   <body>
     <div class="wrapper">
@@ -18,37 +22,20 @@
         </div>
       </div>
       <div class="location-img">
-        <img src="./assets/sample-location-img.png" />
+        <img src="./assets/no-photo.jpg" />
       </div>
       <div class="separator"></div>
       <div class="overview">
-        <div class="overview-content">
-          <div class="overview-header">
-            <p class="section-title">Overview</p>
-            <p class="section-content">해당 여행지에 대한 정보 어쩌구..</p>
-          </div>
-          <div class="overview-details">
-            <div class="detail-box">
-              <div class="detail-box-header">
-                <img src="./assets//overview-icon.png" />
-                <p>주소</p>
-              </div>
-              <div class="detail-info">어쩌구</div>
+        <div class="overview-header">
+          <p class="section-title">Overview</p>
+        </div>
+        <div class="overview-details">
+          <div class="detail-box">
+            <div class="detail-box-header">
+              <img src="./assets//overview-icon.png" />
+              <p>주소</p>
             </div>
-            <div class="detail-box">
-              <div class="detail-box-header">
-                <img src="./assets//overview-icon.png" />
-                <p>시간</p>
-              </div>
-              <div class="detail-info">어쩌구</div>
-            </div>
-            <div class="detail-box">
-              <div class="detail-box-header">
-                <img src="./assets//overview-icon.png" />
-                <p>전화</p>
-              </div>
-              <div class="detail-info">어쩌구</div>
-            </div>
+            <div class="detail-info">어쩌구</div>
           </div>
         </div>
       </div>
@@ -56,7 +43,7 @@
       <div class="reviews">
         <div class="reviews-header">
           <p class="section-title">Reviews</p>
-          <button>리뷰 등록하기</button>
+          <button id="open-modal-button">리뷰 등록하기</button>
         </div>
         <div class="reviews-summary">
           <p>4.2</p>
@@ -105,5 +92,31 @@
         <div class="review-separator"></div>
       </div>
     </div>
+
+    <div id="review-modal" class="modal">
+      <div class="modal-content">
+        <span class="close-button">&times;</span>
+        <p>롯데월드 어드벤쳐 방문은 어떠셨나요?</p>
+        <div class="stars">
+          <img src="./assets/star-off.png" data-value="1" />
+          <img src="./assets/star-off.png" data-value="2" />
+          <img src="./assets/star-off.png" data-value="3" />
+          <img src="./assets/star-off.png" data-value="4" />
+          <img src="./assets/star-off.png" data-value="5" />
+        </div>
+        <p>방문 후기를 남겨주세요</p>
+        <form id="review-form">
+          <textarea
+            id="review-text"
+            name="review-text"
+            placeholder="어쩌구 저쩌구"
+            required
+          ></textarea>
+          <button type="submit">리뷰 등록하기</button>
+        </form>
+      </div>
+    </div>
+
+    <script src="detail_page.js"></script>
   </body>
 </html>
