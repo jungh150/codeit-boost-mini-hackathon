@@ -39,6 +39,22 @@ const ensureAuthenticated = (req, res, next) => {
     }
   };
 
+    // 여행지 평점 업데이트 함수
+async function updatePlaceRating(placeId) {
+    const reviews = await prisma.review.findMany({
+        where: { placeId },
+        select: { rating: true }
+    });
+
+    const totalRating = reviews.reduce((sum, review) => sum + review.rating, 0);
+    const avgRating = totalRating / reviews.length;
+
+    await prisma.place.update({
+        where: { id: placeId },
+        data: { rating: avgRating }
+    });
+}
+
 // 여행지 리뷰 수정
 reviewRouter.put('/:reviewId', ensureAuthenticated, asyncHandler(async (req, res) => {
     const { reviewId } = req.params;
@@ -48,23 +64,54 @@ reviewRouter.put('/:reviewId', ensureAuthenticated, asyncHandler(async (req, res
     if(rating) data.rating = rating;
     if(comment) data.comment = comment;
 
+    // 해당 리뷰를 먼저 조회하여 placeId를 가져옴
+    const review = await prisma.review.findUnique({
+        where: { id: reviewId },
+        select: { placeId: true }
+    });
+
+    if (!review) {
+        return res.status(404).json({ message: 'Review not found' });
+    }
+
     const updatedReview = await prisma.review.update({
         where: {
             id: reviewId
         }, 
         data
     });
+
+    // 평균 평점 업데이트
+    await updatePlaceRating(review.placeId);
+
     res.status(200).json(updatedReview);
 }));
 
 // 여행지 리뷰 삭제
 reviewRouter.delete('/:reviewId', ensureAuthenticated, asyncHandler(async (req, res) => {
     const { reviewId } = req.params;
+
+    // 해당 리뷰를 먼저 조회하여 placeId를 가져옴
+    const review = await prisma.review.findUnique({
+        where: { id: reviewId },
+        select: { placeId: true }
+    });
+
+    if (!review) {
+        return res.status(404).json({ message: 'Review not found' });
+    }
+
+    const placeId = review.placeId;
+    
     await prisma.review.deleteMany({
         where: {
             id: reviewId
         }
     });
+
+    // 평균 평점 업데이트
+    await updatePlaceRating(placeId);
+
     res.status(200).json({message: "성공적으로 삭제되었습니다."});
 }));
 
