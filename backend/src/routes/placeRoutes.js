@@ -144,10 +144,10 @@ placeRouter.post('/:placeId/wish', ensureAuthenticated, asyncHandler(async (req,
 // 여행지 찜 삭제
 placeRouter.delete('/:placeId/wish', ensureAuthenticated, asyncHandler(async (req, res) => {
     const { placeId } = req.params;
-    const { userId } = req.body;
+    const { id } = req.user;
     await prisma.wish.deleteMany({ // many가 안전하기는 할 듯.. 다른데서 확실히 1대1 보장받는거 아니면
         where: {
-            userId,
+            userId: id,
             placeId // 순서 안중요
         }
     });
