@@ -8,6 +8,10 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 const app = express();
+
+// console.log(`The current environment is: ${process.env.NODE_ENV}`);
+
+
 app.use(express.json());
 
 import authRouter from './routes/authRoutes.js';
