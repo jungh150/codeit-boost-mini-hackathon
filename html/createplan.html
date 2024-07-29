@@ -10,36 +10,41 @@
 <body>
     <div class="nav">
         <!-- 추가한 검색창 부분 -->
-          <div class="search-container">
-              <div class="search-icon" id="searchIcon">&#128269;</div>
-              <div class="search-block">
-                  <input type="text" id="searchInput" placeholder="여행 지역 또는 키워드를 입력해주세요.">
-              </div>
-          </div>
-           <!-- 여기까지  -->
-            
-          <ul class="menu">
-              <li>여행지 검색</li>
-              <li>여행일정 만들기</li>
-              <li>회원가입</li>
-              <li class="myPage">마이페이지</li>
-          </ul>
-      </div>
-
-<!-- main -->
-
-<div class="container">
-    <h1>나만의 여행 만들기</h1>
-    <input type="text" id="title" placeholder="여행의 제목을 입력하세요." />
-    <input type="date" id="startDate" />
-    <input type="date" id="endDate" />
-    <button id="createSchedule" onclick="generateItinerary()"><b>여행 일정 생성하기</b></button>
-    
-    <div id="scheduleList">
-        <h2>나의 여행</h2>
-        <div id="itinerary" class="itinerary"></div>
+        <div class="search-container">
+            <div class="search-icon" id="searchIcon">&#128269;</div>
+            <div class="search-block">
+                <input type="text" id="searchInput" placeholder="여행 지역 또는 키워드를 입력해주세요.">
+            </div>
+        </div>
+        <!-- 여기까지 -->
+        <ul class="menu">
+            <li>여행지 검색</li>
+            <li>여행일정 만들기</li>
+            <li>회원가입</li>
+            <li class="myPage">마이페이지</li>
+        </ul>
     </div>
-</div>
-<script src="../js/createplan.js"></script>
-<script src="../js/script.js"></script>
+    <!-- main -->
+    <div class="container">
+        <div class="left-container">
+            <h1><b>나만의 여행 만들기</b></h1>
+            <input type="text" id="title" placeholder="여행의 제목을 입력하세요." />
+            <input type="date" id="startDate" />
+            <input type="date" id="endDate" />
+            <button id="createSchedule" onclick="generateItinerary()"><b>여행 일정 생성하기</b></button>
+            
+            <div id="scheduleList">
+                <h2>나의 여행</h2>
+                <div id="itinerary" class="itinerary"></div>
+            </div>
 
+        </div>
+        <div class="map-placeholder"><h3>지도 삽입할 위치</h3></div> <!-- 지도 위치 -->
+    </div>
+
+    
+
+    <script src="../js/createplan.js"></script>
+    <script src="../js/script.js"></script>
+</body>
+</html>

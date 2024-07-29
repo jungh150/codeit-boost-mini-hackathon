@@ -48,6 +48,7 @@ function generateItinerary(title, startDate, endDate) {
                 <span style="font-size: 14px; color: black;"> (${date.toISOString().split('T')[0]}) </span>
             </h3>
         `;
+
         
         itinerary.appendChild(card);
     }
