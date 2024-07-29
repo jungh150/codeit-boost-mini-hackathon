@@ -49,6 +49,43 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    function handleHeartClick(event) {
+        const heartIcon = event.currentTarget;
+        const placeCard = heartIcon.closest('.place-card');
+        const placeId = placeCard.getAttribute('data-place-id');
+        
+        // Toggle the heart icons
+        const isFullHeart = heartIcon.classList.contains('fa-solid');
+        const fullHeartIcon = placeCard.querySelector('.full-heart-icon');
+        const emptyHeartIcon = placeCard.querySelector('.heart-icon');
+
+        if (isFullHeart) {
+            // Remove from wishlist
+            fetch(`/places/${placeId}/wish`, {
+                method: 'DELETE'
+            }).then(response => {
+                if (response.ok) {
+                    fullHeartIcon.classList.remove('fa-solid');
+                    emptyHeartIcon.classList.add('fa-regular');
+                }
+            });
+        } else {
+            // Add to wishlist
+            fetch(`/places/${placeId}/wish`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ placeId })
+            }).then(response => {
+                if (response.ok) {
+                    emptyHeartIcon.classList.remove('fa-regular');
+                    fullHeartIcon.classList.add('fa-solid');
+                }
+            });
+        }
+    }
+
     const { query, data } = getQueryParams();
     console.log('검색어:', query);
     console.log('장소 데이터:', data);
