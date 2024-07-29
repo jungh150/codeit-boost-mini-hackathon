@@ -89,6 +89,36 @@ travelRouter.post('/', asyncHandler(async (req, res) => {
   res.status(201).send(travel);
 }));
 
+// 여행 계획의 일별 계획 생성
+travelRouter.post('/:travelId/day', asyncHandler(async (req, res) => {
+  const { travelId } = req.params;
+  const userId = req.user.id;
+  const dayData = {
+    ...req.body,
+    userId,
+    travelId
+  };
+  const day = await prisma.day.create({
+    data: dayData,
+  });
+  res.status(201).send(day);
+}));
+
+// 여행 계획의 일별 계획의 일정 생성
+travelRouter.post('/:travelId/day/:dayId/event', asyncHandler(async (req, res) => {
+  const { dayId } = req.params;
+  const userId = req.user.id;
+  const eventData = {
+    ...req.body,
+    userId,
+    dayId
+  };
+  const event = await prisma.event.create({
+    data: eventData,
+  });
+  res.status(201).send(event);
+}));
+
 // 여행 계획 수정
 travelRouter.patch('/:travelId', asyncHandler(async (req, res) => {
   const { travelId } = req.params;
