@@ -13,11 +13,13 @@ app.use(express.json());
 import authRouter from './routes/authRoutes.js';
 import userRouter from './routes/userRoutes.js';
 import placeRouter from './routes/placeRoutes.js';
+import reviewRouter from './routes/reviewRoutes.js';
 
 // 라우트 설정
 app.use('/auth', authRouter);
 app.use('/users', userRouter);
 app.use('/places', placeRouter);
+app.use('/reviews', reviewRouter);
 
 const fileStore = FileStore(session);
 const sessionSecret = process.env.SESSION_SECRET;
