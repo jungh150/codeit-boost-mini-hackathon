@@ -68,4 +68,18 @@ reviewRouter.delete('/:reviewId', ensureAuthenticated, asyncHandler(async (req, 
     res.status(200).json({message: "성공적으로 삭제되었습니다."});
 }));
 
+// 여행지 리뷰 상세 조회
+reviewRouter.get('/:reviewId', asyncHandler(async (req, res) => {
+
+    const { reviewId } = req.params;
+    const review = await prisma.review.findUnique({
+        where: { id: reviewId }
+    });
+    if(!review){
+        return res.status(404).json({ message: 'Review not found'});
+    } else{
+        res.status(200).json(review);
+    }
+}));
+
 export default reviewRouter;
