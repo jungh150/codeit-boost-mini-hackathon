@@ -129,10 +129,11 @@ placeRouter.get('/:placeId', asyncHandler(async (req, res) => {
 // 여행지 찜 등록
 placeRouter.post('/:placeId/wish', ensureAuthenticated, asyncHandler(async (req, res) => {
     const { placeId } = req.params;
-    const { userId, comment } = req.body;
+    const { id } = req.user;
+    const { comment } = req.body;
     const newWish = await prisma.wish.create({
         data: {
-            userId,
+            userId: id,
             placeId,
             comment
         }
