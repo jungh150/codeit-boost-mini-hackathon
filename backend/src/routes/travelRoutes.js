@@ -130,6 +130,28 @@ travelRouter.patch('/:travelId', asyncHandler(async (req, res) => {
   res.send(travel);
 }));
 
+// 여행 계획의 일별 계획 수정
+travelRouter.patch('/:travelId/day/:dayId', asyncHandler(async (req, res) => {
+  const { dayId } = req.params;
+  console.log(req.body);
+  const day = await prisma.day.update({
+    where: { id: dayId },
+    data: req.body,
+  });
+  res.send(day);
+}));
+
+// 여행 계획의 일별 계획의 일정 수정
+travelRouter.patch('/:travelId/day/:dayId/event/:eventId', asyncHandler(async (req, res) => {
+  const { eventId } = req.params;
+  console.log(req.body);
+  const event = await prisma.event.update({
+    where: { id: eventId },
+    data: req.body,
+  });
+  res.send(event);
+}));
+
 // 여행 계획 삭제
 travelRouter.delete('/:travelId', asyncHandler(async (req, res) => {
   const { travelId } = req.params;
