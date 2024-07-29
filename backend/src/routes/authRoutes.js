@@ -33,17 +33,6 @@ authRouter.use(passport.session());
 passport.serializeUser((user, done) => done(null, user));
 passport.deserializeUser((user, done) => done(null, user));
 
-// 사용자 정보 데이터베이스 (추후에 데이터베이스로 대체)
-const users = [{
-  id: '1',
-  email: 'goodmemory@tistory.com',
-  password: 'goodmemory',
-  name: 'goodmemory',
-  provider: '',
-  token: '',
-  providerId: ''
-}];
-
 // 구글 API ID, Secret 정보 저장 (구글 개발자 웹사이트에서 발급받은 클라이언트 ID와 시크릿 입력)
 const googleCredentials = {
   "web": {
