@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>여행 일정 만들기</title>
+    <link rel="stylesheet" href="../css/createplan.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <script src="../js/script.js" defer></script>
+    <link href="https://hangeul.pstatic.net/hangeul_static/css/nanum-square-neo.css" rel="stylesheet">
+</head>
+<body>
+    <div class="nav">
+        <div class="search-container">
+            <div class="search-icon" id="searchIcon">&#128269;</div>
+            <div class="search-block">
+                <input type="text" id="searchInput" placeholder="여행 지역 또는 키워드를 입력해주세요.">
+                <button id="searchButton">검색</button>
+              </div>
+        </div>
+
+        <ul class="menu">
+            <li class="createPlan">여행일정 만들기</li>
+            <li>회원가입</li>
+            <li class="myPage">마이페이지</li>
+        </ul>
+    </div>
+            
+          <ul class="menu">
+              <li>여행지 검색</li>
+              <li>여행일정 만들기</li>
+              <li>회원가입</li>
+              <li class="myPage">마이페이지</li>
+          </ul>
+      </div>
+
+    <div class="container">
+        <div class="form-map-container">
+            <div class="form-section">
+                <h1>나만의 여행 만들기</h1>
+                <input type="text" id="title" placeholder="여행의 제목을 입력하세요." />
+                <input type="date" id="startDate" />
+                <input type="date" id="endDate" />
+                <button id="createSchedule"><b>여행 일정 생성하기</b></button>
+                
+                <div id="scheduleList">
+                    <h2>나의 여행</h2>
+                    <ul id="schedules"></ul>
+                </div>
+            </div>
+            <div class="map-section">
+                <div id="map" style="height: 400px; width: 100%;"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/createplan.js"></script>
+    <script src="../js/script.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.js"></script>
+</body>
+</html>
