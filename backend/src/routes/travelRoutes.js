@@ -48,6 +48,19 @@ travelRouter.get('/:travelId', asyncHandler(async (req, res) => {
   }
 }));
 
+// 여행 계획 생성
+travelRouter.post('/', asyncHandler(async (req, res) => {
+  const userId = req.user.id;
+  const travelData = {
+    ...req.body,
+    userId,
+  };
+  const travel = await prisma.travel.create({
+    data: travelData,
+  });
+  res.status(201).send(travel);
+}));
+
 // 여행 계획 수정
 travelRouter.patch('/:travelId', asyncHandler(async (req, res) => {
   const { travelId } = req.params;
